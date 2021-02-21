@@ -1,21 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { AppLoading } from "expo";
+
+import * as Font from "expo-font";
+import TimerNavigator from "./navigation/TimerNavigator";
+
+const fetchFonts = () => {
+  return Font.loadAsync({
+    "digital-7": require("./assets/fonts/digital-7.ttf"),
+    "roboto-light": require("./assets/fonts/Roboto-Light.ttf"),
+    roboto: require("./assets/fonts/Roboto-Regular.ttf"),
+  });
+};
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (!fontsLoaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => {
+          setFontsLoaded(true);
+        }}
+      />
+    );
+  }
+
+  return <TimerNavigator />;
+}
